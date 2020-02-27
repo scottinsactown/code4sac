@@ -122,15 +122,20 @@ function buildPage(flow, outcomes, demo, yearlyData){
         title: {
             text: 'Program enrollees with permanent housing upon program exit'
         },
+        subtitle: {
+            text: 'For all participants who leave a program,\
+             the percent who exited to permanent housing is shown. Participants are counted once.'
+        },
         // Turn off Highcharts.com label/link 
         credits: {
-            enabled: false
+            enabled: true
         },
         xAxis: {
             categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         },
         yAxis: {
+            min: 0,
             title: {
                 text: ''
             },
@@ -219,7 +224,10 @@ function buildYearlyBar(yearlyData) {
             text: 'Program Participation by Year'
         },
         subtitle: {
-            text: '2019 data available through August.<br>Chart shows full year projection for 2019.'
+            text: 'For each year, the number of new enrollments in homeless service\
+             programs, ongoing enrollment, and enrollments that ended are shown. Each enrollment is counted,\
+              so clients are included more than once if participating in more than one program.\
+               Data for 2019 is projected based on data through August 2019.'
         },
         // annotations: [{
         //     labels: [{
@@ -251,7 +259,7 @@ function buildYearlyBar(yearlyData) {
             }
         },
         credits: {
-            enabled: false
+            enabled: true
         },
         tooltip: {
             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
@@ -269,15 +277,15 @@ function buildYearlyBar(yearlyData) {
             }
         },
         series: [{
-            name: 'In',
+            name: 'Started',
             data: []
     
         }, {
-            name: 'Active',
+            name: 'Ongoing',
             data: []
     
         }, {
-            name: 'Out',
+            name: 'Ended',
             data: []
     
         }]
@@ -307,7 +315,9 @@ function updateFlow(flow, year) {
             text: `${year} Program Participation by Month`
         },
         subtitle: {
-            text: 'For a closer look at participant flow in and out, deselect the Active category in the legend'
+            text: 'For each month, we show the number of new enrollments in homeless service programs,\
+             ongoing enrollment, and enrollments that ended. Each enrollment is counted,\
+              so clients are included more than once if participating in more than one program'
         },
         xAxis: {
             categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -340,15 +350,15 @@ function updateFlow(flow, year) {
             }
         },
         series: [{
-            name: 'In',
+            name: 'Started',
             data: []
     
         }, {
-            name: 'Active',
+            name: 'Ongoing',
             data: []
     
         }, {
-            name: 'Out',
+            name: 'Ended',
             data: []
     
         }]

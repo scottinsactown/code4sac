@@ -2,13 +2,23 @@
 
 from flask import Flask, jsonify
 from flask_cors import CORS 
-from sqlalchemy import create_engine
-from sqlalchemy import create_engine
-from config import username, password
+
+import psycopg2
+
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__, static_folder='static')
 CORS(app)
-engine = create_engine('postgresql://{}:{}@localhost:5432/sac_hmis_db'.format(username, password))
+
+
+url = os.environ['DATABASE_URL']
+
+conn = psycopg2.connect(url, sslmode='require')
+
+
 
 @app.route('/')
 def home():
@@ -59,8 +69,9 @@ def get_data():
                             None:[]}}
                     } 
                     
-    with engine.connect() as c:
-        rs = c.execute('Select * from yearly_flow')
+    with conn.cursor() as c:
+        c.execute('Select * from yearly_flow')
+        rs = c.fetchall()
         for r in rs:
             response['flow']['yearly']['in'][r[3]] = r[0]
             response['flow']['yearly']['out'][r[3]] = r[1]
@@ -69,7 +80,8 @@ def get_data():
             response['outcomes']['yearly']['average'][r[3]] = int(r[5])
             response['flow']['yearly']['active'][r[3]] = r[2]
             response['outcomes']['yearly']['percent_ph'][r[3]]=int(r[6])
-        rs = c.execute('Select * from monthly_flow')
+        c.execute('Select * from monthly_flow')
+        rs = c.fetchall()
         for r in rs:
             response['flow']['monthly']['in'][r[3]] = r[0]
             response['flow']['monthly']['active'][r[3]] = r[2]
@@ -77,7 +89,8 @@ def get_data():
             response['outcomes']['monthly']['exit_all'][r[3]] = r[1]
             response['outcomes']['monthly']['exit_ph'][r[3]] = r[4]
             response['outcomes']['monthly']['percent_ph'][r[3]]=int(r[5])
-        rs = c.execute('Select * from demographics')
+        c.execute('Select * from demographics')
+        rs = c.fetchall()
         for r in rs:
             response['demo']['age'][r[12]].append([r[7],r[8],r[9],r[10],r[11]])
             response['demo']['sex'][r[5]].append([r[3],r[4]])

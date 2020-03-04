@@ -1,7 +1,7 @@
 // HMIS dashboard
 
 var t0 = performance.now();
-var url = 'http://localhost:5000/api'
+var url = 'https://hmis-dashboard.herokuapp.com/api'
 d3.json(url, function(data) {
     console.log('Full Data: ', data);
     var flowData = data['flow'];

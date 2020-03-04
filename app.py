@@ -1,6 +1,6 @@
 # Flask app for HMIS dashboard
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 from flask_cors import CORS 
 
 import psycopg2
@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-app = Flask(__name__, static_folder='static')
+app = Flask(__name__)
 CORS(app)
 
 
@@ -22,7 +22,8 @@ conn = psycopg2.connect(url, sslmode='require')
 
 @app.route('/')
 def home():
-    return ('<h1>Place Holder</h1>')
+    
+    return render_template('index.html')
 
 # Add routes to pull table views
 # Activity data

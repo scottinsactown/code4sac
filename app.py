@@ -1,17 +1,16 @@
 # Flask app for HMIS dashboard
 
 from flask import Flask, jsonify, render_template
-from flask_cors import CORS 
+
 
 import psycopg2
-
+import pandas as pd 
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
 
 
 url = os.environ['DATABASE_URL']
@@ -104,6 +103,20 @@ def get_data():
     del response['flow']['top_5'][None]
     
     return jsonify(response)
+
+
+
+@app.route('/api/source')
+def get_source():
+    responce = {}
+    responce['clients'] = pd.read_sql('Select * from clients', con=conn).to_json(orient='split', index=False)
+    responce['assessment'] = pd.read_sql('Select * from assessment', con=conn).to_json(orient='split', index=False)
+    responce['programs'] = pd.read_sql('Select * from programs', con=conn).to_json(orient='split', index=False)
+    responce['enrollment'] = pd.read_sql('Select * from enrollment', con=conn).to_json(orient='split', index=False)
+    responce['exit_screen'] = pd.read_sql('Select * from exit_screen', con=conn).to_json(orient='split', index=False)
+    responce['destinations'] = pd.read_sql('Select * from destinations', con=conn).to_json(orient='split', index=False)
+   
+    return jsonify(responce)
 
 # Demographic data
 

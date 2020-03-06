@@ -396,7 +396,7 @@ function updateOutcomes(outcomes, year) {
     d3.select('#outcome-row-card-header-avg').html
         (`<h4>${year}</h4>`);
         d3.select('#avg-ph-text').html(`<h1 class='h1-card'> ${outcomes.avgTimeToPH} days</h1>
-        <p>Average time from initial shelter/transitional housing to permanent housing</p>`);     
+        <p>Average time from initial street outreach/shelter/transitional housing to permanent housing</p>`);     
 }
 
 function updateDemo(demo,year) {

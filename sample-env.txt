@@ -1,1 +1,1 @@
-DATABASE_URL='postgres://USERNAME:PASSWORD@localhost:5432/DATABASENAME'  
+DATABASE_URL='postgres://USERNAME:PASSWORD@localhost:5432/sac_hmis_db'  

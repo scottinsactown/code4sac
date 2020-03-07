@@ -2,46 +2,33 @@
 
 ##### A project to provide a user friendly and interactive dashboard with data from Sacramento County's Homeless Management Information System
 
+* Dashboard now live at https://hmis-dashboard.herokuapp.com/
+* Source database API: https://hmis-dashboard.herokuapp.com/api/source 
+* Data source [here](https://github.com/code4sac/sacramento-county-homeless-hmis-data/tree/master/data).
+
+## Readme contents:
+* Context
+* Execution Instructions
+* Assumptions Used to Produce Charts  <br /><br />
+ 
 ![top_of_dash](images/HMIS_dash_top.JPG)
 
-###### A homeless management information system (HMIS) is a database used to aggregate data on homeless populations served across the United States. This repository contains the source Sacramento County HMIS data (\*plus a locally-created exit_destinations csv file), a Jupyter Notebook that loads the data into a PostgreSQL database, a flask API that then serves the data from the database, and finally a web based dashboard using HTML, CSS, and JavaScript. The dashboard includes interactive charts that allows users to explore homeless services program volumes, outcomes, and participant demographics. An explanation of assumptions made for chart plotting is also included at the bottom of this readme.
+## Context
 
+A homeless management information system (HMIS) is a database used to aggregate data on homeless populations served across the United States. This repository contains the source Sacramento County HMIS data (\*plus a locally-created exit_destinations csv file), a Jupyter Notebook that loads the data into a PostgreSQL database, a flask API that then serves the data from the database, and finally a web based dashboard using HTML, CSS, and JavaScript. The dashboard includes interactive charts that allows users to explore homeless services program volumes, outcomes, and participant demographics. An explanation of assumptions made for chart plotting is also included at the bottom of this readme.  <br /><br />
 ![mid_dash](images/HMIS_dash_middle.JPG)
+
 
 ## Execution Instructions
 
 1. Create a local PostgreSQL database named "sac_hmis_db".
-2. Open DB_Load Jupyter Notebook and add in your PostgreSQL `username` and `password` in the second cell.
-3. Run all cells in DB_Load Jupyter notebook.
-4. From the terminal, navigate to the "Flask-App" folder and run app.py by typing: `python app.py`.
-5. Open a new terminal, navigate to the "Homeless-Dashboard" folder, and have python set up a local server by typing `python -m http.server`.
-6. Open your browser then go to the url `http://localhost:8000/`.
+2. Create a local .env file with your PostgreSQL `username` and `password`. See sample-env.txt file in repo for format.
+3. Run all cells in DB_Load Jupyter notebook, which is found in the "data" folder.
+4. Use a terminal to navigate to the main folder and run app.py by typing: `python app.py`.
+5. Open your browser and go to the url `http://localhost:5000/`.
 
 ![bottom_dash](images/HMIS_dash_bottom.JPG)
 
-## Contents
-
-#### Data (folder):
-
-- DB_Load:
-  - Jupyter Notebook that executes raw SQL to create PostgreSQL database tables.
-  - Formats then loads csv files into database.
-  - Creates multiple views and new aggregate tables in database. This leverages the benefits of a relational database to extract valuable information from the raw data.
-  - Uses Pandas to manipulate some tables and do some calculations on the data before writing back into database.
-- CSV files containing all raw data that is used in this project.
-  - Data source can be found [here](https://github.com/code4sac/sacramento-county-homeless-hmis-data/tree/master/data). An additional spreadsheet with exit destinations was created to facilitate analysis.
-
-#### Flask-App (folder):
-
-- app.py:
-  - Python file using Flask to create a local API that returns the aggregate tables as a JSON object.
-
-#### Homeless-Dashboard (folder):
-
-- index.html -> html file containing structure of dashboard.
-- static:
-  - JS -> app.js -> a JavaScript file that hits Flask API and dynamically builds the dashboard utilizing the Highcharts library.
-  - CSS -> style.css -> a Cascading Style Sheet that adds style and formatting to the dashboard.
 
 ## Assumptions Used for Producing Charts
 
@@ -64,7 +51,7 @@
 
 #### Outcomes/Average time to permanent housing
 
-- Time calculated for those who started in transitional housing or day/emergency shelter and exited to permanent housing Category 1.
+- Time calculated for those who started from street outreach, transitional housing, or day/emergency shelter and exited to permanent housing Category 1.
 
 #### Demographics
 

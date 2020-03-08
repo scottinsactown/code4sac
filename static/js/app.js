@@ -1,9 +1,9 @@
 // HMIS dashboard
 
-var t0 = performance.now();
+// var t0 = performance.now();
 var url = '/api'
 d3.json(url, function(data) {
-    console.log('Full Data: ', data);
+    // console.log('Full Data: ', data);
     var flowData = data['flow'];
     var outcomesData = data['outcomes']
     var demoData = data['demo']
@@ -13,12 +13,12 @@ d3.json(url, function(data) {
     var yearlyData = unpackPage(data)
 
     buildPage(filteredFlow, filteredOutcomes, filteredDemo, yearlyData);
-    console.log('2018 Filtered Data for PH row: ', filteredOutcomes);
-    console.log('2018 Filtered Data for in/out/exit row: ', filteredFlow);
-    console.log('2018 Filtered Data for Demo row: ', filteredDemo);
-    console.log('Full yearly data for page load yearly graphs: ', yearlyData);
-    var t1 = performance.now();
-    console.log("Call to get and log data took " + (t1 - t0) + " milliseconds.");
+    // console.log('2018 Filtered Data for PH row: ', filteredOutcomes);
+    // console.log('2018 Filtered Data for in/out/exit row: ', filteredFlow);
+    // console.log('2018 Filtered Data for Demo row: ', filteredDemo);
+    // console.log('Full yearly data for page load yearly graphs: ', yearlyData);
+    // var t1 = performance.now();
+    // console.log("Call to get and log data took " + (t1 - t0) + " milliseconds.");
 
     //Fill drop down with year options
     yearlyData.years.forEach(item => {

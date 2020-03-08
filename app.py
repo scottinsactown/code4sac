@@ -32,6 +32,9 @@ def get_data():
     response = {'flow':{'yearly':{'in':{},
                                 'out':{},
                                 'active':{}},
+                                'distinct_active':{},
+                                'distinct_in':{},
+                                'distinct_out':{}},
                     'monthly':{'in':{},
                                 'out':{},
                                 'active':{}},
@@ -80,6 +83,9 @@ def get_data():
             response['outcomes']['yearly']['average'][r[3]] = int(r[5])
             response['flow']['yearly']['active'][r[3]] = r[2]
             response['outcomes']['yearly']['percent_ph'][r[3]]=int(r[6])
+            response['flow']['yearly']['distinct_active'][r[3]] = r[7]
+            response['flow']['yearly']['distinct_in'][r[3]] = r[8]
+            response['flow']['yearly']['distinct_out'][r[3]] = r[9]
         c.execute('Select * from monthly_flow')
         rs = c.fetchall()
         for r in rs:

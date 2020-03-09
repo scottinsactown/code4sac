@@ -31,7 +31,7 @@ def get_data():
 
     response = {'flow':{'yearly':{'in':{},
                                 'out':{},
-                                'active':{}},
+                                'active':{},
                                 'distinct_active':{},
                                 'distinct_in':{},
                                 'distinct_out':{}},
@@ -43,7 +43,7 @@ def get_data():
                                 '2017':[],
                                 '2018':[],
                                 '2019':[],
-                            None:[]},
+                            None:[]}},
                 'outcomes':{'yearly':{'exit_ph':{},
                                     'exit_all':{},
                                     'average':{},

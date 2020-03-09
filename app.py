@@ -43,8 +43,8 @@ def get_data():
                                 '2017':[],
                                 '2018':[],
                                 '2019':[],
-                            None:[]}},
-                    'outcomes':{'yearly':{'exit_ph':{},
+                            None:[]},
+                'outcomes':{'yearly':{'exit_ph':{},
                                     'exit_all':{},
                                     'average':{},
                                     'percent_ph':{}

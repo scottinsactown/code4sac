@@ -34,6 +34,9 @@ function unpackPage(responseData) {
     yearly['in'] = Object.entries(responseData.flow.yearly.in).map(d => d[1]);
     yearly['out'] = Object.entries(responseData.flow.yearly.out).map(d => d[1]);
     yearly['active'] = Object.entries(responseData.flow.yearly.active).map(d => d[1]);
+    yearly['distinct_active'] = Object.entries(responseData.flow.yearly.distinct_active).map(d => d[1]);
+    yearly['distinct_in'] = Object.entries(responseData.flow.yearly.distinct_in).map(d => d[1]);
+    yearly['distinct_out'] = Object.entries(responseData.flow.yearly.distinct_out).map(d => d[1]);
     yearly['monthlyOutcomes'] = {'exitAll':responseData.outcomes.monthly.exit_all,
                                 'exitPH': responseData.outcomes.monthly.exit_ph,
                                 'percentPHmo': responseData.outcomes.monthly.percent_ph};
@@ -112,6 +115,7 @@ function buildPage(flow, outcomes, demo, yearlyData){
     updateOutcomes(outcomes, '2018');
     updateDemo(demo,'2018');
     buildYearlyBar(yearlyData);
+    buildYearlyDistinctBar(yearlyData);
 
     // PH chart
     d3.select('container').html
@@ -227,7 +231,7 @@ function buildYearlyBar(yearlyData) {
             text: 'For each year, the number of new enrollments in homeless service\
              programs, ongoing enrollment, and enrollments that ended are shown. Each enrollment is counted,\
               so clients are included more than once if participating in more than one program.\
-               Data for 2019 is projected based on data through August 2019.'
+               Data for 2019 only available through August.'
         },
         // annotations: [{
         //     labels: [{
@@ -300,45 +304,62 @@ function buildYearlyBar(yearlyData) {
     Highcharts.chart('yearly-bar',chartOptions);
     
   }
-// function to update flow of in/out/exit row 
-// flow will be dictionary of all data needed for this row filtered to year
-function updateFlow(flow, year) {
-    // code for graphs 
-    // will just be changing the css class to "active"/"inactive" for yearly chart
-    var months = flow.months;
-    console.log(months);
+
+//   Build distinct count of clients bar chart
+  function buildYearlyDistinctBar(yearlyData) {
+    var years = yearlyData.years;
+    var data = [yearlyData.distinct_in, yearlyData.distinct_active, yearlyData.distinct_out]
+
     var chartOptions =  {
         chart: {
             type: 'column'
         },
         title: {
-            text: `${year} Program Participation by Month`
+            text: 'Distinct Count of Clients'
         },
         subtitle: {
-            text: 'For each month, we show the number of new enrollments in homeless service programs,\
-             ongoing enrollment, and enrollments that ended. Each enrollment is counted,\
-              so clients are included more than once if participating in more than one program'
+            text: 'For each year, the number of new enrollments in homeless service\
+            programs, ongoing enrollment, and enrollments that ended are shown.\
+            This chart shows the distinct number of clients for that year.\
+            Data for 2019 is through August.'
         },
+        // annotations: [{
+        //     labels: [{
+        //         point: {
+        //             // xAxis: 0,
+        //             // yAxis: 0,
+        //             // x:300,
+        //             // y:50,
+
+        //         },
+        //         text: 'Projected'
+            // }],
+        //     labelOptions: {
+        //         x: 10, y: -10
+        //     }
+        // }],
         xAxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-        ],
+            categories: [
+                
+            ],
             crosshair: true
-        },
-        credits: {
-            enabled: false
         },
         yAxis: {
             min: 0,
-            softMax: 10000,
             title: {
-                text: ''
+                text: '',
+                // rotation: 0,
+                // y: 0
             }
+        },
+        credits: {
+            enabled: true
         },
         tooltip: {
             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:"black";padding:0">{series.name}: </td>' + " " +
-                '<td style="padding:0; text-align: right"><b>{point.y}</b></td></tr>',
+            pointFormat: '<tr><td style="color:"black";padding:0">{series.name}: </td>' +
+                '<td style="padding:0; text-align:right"><b>{point.y}</b></td></tr>',
+
             footerFormat: '</table>',
             shared: true,
             useHTML: true
@@ -363,14 +384,88 @@ function updateFlow(flow, year) {
     
         }]
     };
-    months.forEach((month,index) => {
-        chartOptions.series[0].data.push(flow.in[index]);
-        chartOptions.series[1].data.push(flow.active[index]);
-        chartOptions.series[2].data.push(flow.out[index]);
-        // chartOptions.xAxis.categories.push(month);
+    years.forEach((year,index) => {
+        chartOptions.series[0].data.push(yearlyData.distinct_in[index]);
+        chartOptions.series[1].data.push(yearlyData.distinct_active[index]);
+        chartOptions.series[2].data.push(yearlyData.distinct_out[index]);
+        chartOptions.xAxis.categories.push(year);
     });
 
-    Highcharts.chart('monthly-bar',chartOptions);
+    Highcharts.chart('yearly-bar-distinct',chartOptions);
+    
+  }
+
+// function to update flow of in/out/exit row 
+// flow will be dictionary of all data needed for this row filtered to year
+function updateFlow(flow, year) {
+    // code for graphs 
+    // will just be changing the css class to "active"/"inactive" for yearly chart
+    var months = flow.months;
+    console.log(months);
+    // var chartOptions =  {
+    //     chart: {
+    //         type: 'column'
+    //     },
+    //     title: {
+    //         text: `${year} Program Participation by Month`
+    //     },
+    //     subtitle: {
+    //         text: 'For each month, we show the number of new enrollments in homeless service programs,\
+    //          ongoing enrollment, and enrollments that ended. Each enrollment is counted,\
+    //           so clients are included more than once if participating in more than one program'
+    //     },
+    //     xAxis: {
+    //         categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    //         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    //     ],
+    //         crosshair: true
+    //     },
+    //     credits: {
+    //         enabled: false
+    //     },
+    //     yAxis: {
+    //         min: 0,
+    //         softMax: 10000,
+    //         title: {
+    //             text: ''
+    //         }
+    //     },
+    //     tooltip: {
+    //         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+    //         pointFormat: '<tr><td style="color:"black";padding:0">{series.name}: </td>' + " " +
+    //             '<td style="padding:0; text-align: right"><b>{point.y}</b></td></tr>',
+    //         footerFormat: '</table>',
+    //         shared: true,
+    //         useHTML: true
+    //     },
+    //     plotOptions: {
+    //         column: {
+    //             pointPadding: 0.2,
+    //             borderWidth: 0
+    //         }
+    //     },
+    //     series: [{
+    //         name: 'Started',
+    //         data: []
+    
+    //     }, {
+    //         name: 'Ongoing',
+    //         data: []
+    
+    //     }, {
+    //         name: 'Ended',
+    //         data: []
+    
+    //     }]
+    // };
+    // months.forEach((month,index) => {
+    //     chartOptions.series[0].data.push(flow.in[index]);
+    //     chartOptions.series[1].data.push(flow.active[index]);
+    //     chartOptions.series[2].data.push(flow.out[index]);
+    //     // chartOptions.xAxis.categories.push(month);
+    // });
+
+    // Highcharts.chart('monthly-bar',chartOptions);
     
   
 
